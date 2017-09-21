@@ -2,6 +2,8 @@ package ru.pkarh.java2.circles;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame {
     public static final int POS_X = 600;
@@ -30,9 +32,46 @@ public class MainWindow extends JFrame {
         GameCanvas gameCanvas = new GameCanvas(this);
         add(gameCanvas);
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getButton() == e.BUTTON3) {
+                    removeSprite();
+                } else {
+                    addSprite();
+                }
+            }
+        });
+
         initSprites();
 
         setVisible(true);
+    }
+
+    private void addSprite() {
+        int counter = 0;
+        for (int i = 0; i < sprites.length; i++) {
+            if (sprites[i] instanceof Ball){
+               counter++;
+            }
+        }
+        System.out.println("Left button clicked, counter = " + counter);
+        if (counter < sprites.length){
+            sprites[counter] = new Ball();
+        }
+    }
+
+    private void removeSprite() {
+        int counter = 0;
+        for (int i = 0; i < sprites.length; i++) {
+            if (sprites[i] instanceof Ball){
+                counter++;
+            }
+        }
+        System.out.println("Right button clicked, counter = " + counter);
+        if (counter > 1){
+            sprites[counter - 1] = null;
+        }
     }
 
     private void initSprites() {
