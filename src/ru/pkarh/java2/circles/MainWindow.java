@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class MainWindow extends JFrame {
     public static final int POS_X = 600;
@@ -11,7 +12,9 @@ public class MainWindow extends JFrame {
     public static final int WINWOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
 
-    Sprite[] sprites = new Sprite[100];
+    Sprite[] sprites = new Sprite[20];
+
+    private Background background;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -28,8 +31,10 @@ public class MainWindow extends JFrame {
         setSize(WINWOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setTitle("Circles");
+        background = new Background();
 
         GameCanvas gameCanvas = new GameCanvas(this);
+        gameCanvas.setBackground(background.getColor());
         add(gameCanvas);
 
         addMouseListener(new MouseAdapter() {
@@ -58,6 +63,9 @@ public class MainWindow extends JFrame {
         System.out.println("Left button clicked, counter = " + counter);
         if (counter < sprites.length){
             sprites[counter] = new Ball();
+        } else {
+            increaseSpritesArray();
+            sprites[counter] = new Ball();
         }
     }
 
@@ -80,6 +88,12 @@ public class MainWindow extends JFrame {
         }
     }
 
+    private void increaseSpritesArray() {
+        Sprite[] spritesTemp = Arrays.copyOf(sprites,sprites.length * 2);
+        sprites = spritesTemp;
+
+    }
+
     void onDrawFrame(GameCanvas gameCanvas, Graphics graphics, float dt) {
         update(gameCanvas, dt);
         render(gameCanvas, graphics);
@@ -91,6 +105,7 @@ public class MainWindow extends JFrame {
                 sprites[i].update(gameCanvas, dt);
             }
         }
+        background.update(gameCanvas, dt);
     }
 
     private void render(GameCanvas gameCanvas, Graphics graphics) {
@@ -99,5 +114,6 @@ public class MainWindow extends JFrame {
                 sprites[i].render(gameCanvas, graphics);
             }
         }
+        //background.render(gameCanvas, graphics);
     }
 }

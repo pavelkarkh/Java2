@@ -4,13 +4,13 @@ import java.awt.*;
 
 public class Background {
     private Color color;
-    long backgroundTime;
+    float backgroundTime;
 
     public static final float CHANGE_BACKGROUND_TIME = 1.0f;
 
     public Background() {
         initColor();
-        backgroundTime = System.nanoTime();
+        backgroundTime = 0;
     }
 
     public Color getColor() {
@@ -24,4 +24,18 @@ public class Background {
                 (int)(Math.random() * 256f)
         );
     }
+
+    void update(GameCanvas gameCanvas, float dt) {
+
+        backgroundTime += dt;
+        if (backgroundTime > CHANGE_BACKGROUND_TIME) {
+            initColor();
+            gameCanvas.setBackground(color);
+            backgroundTime = 0;
+        }
+    }
+
+//    void render(GameCanvas gameCanvas, Graphics graphics) {
+//        gameCanvas.setBackground(color);
+//    }
 }
