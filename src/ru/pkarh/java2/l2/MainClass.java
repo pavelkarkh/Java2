@@ -21,6 +21,7 @@ public class MainClass {
                 System.out.println("Digital Array");
                 int[][] arrInt = utils.convertToInteger(arrString);
                 utils.printArray(arrInt);
+                System.out.println("Amount arrays digit divided by 2 = " + utils.halfAmount(arrInt));
             } catch (RuntimeException e) {
                 System.out.println("Exeption: " + e.getMessage());
             }
